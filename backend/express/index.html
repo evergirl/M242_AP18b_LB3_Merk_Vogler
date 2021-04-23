@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Color Side</title>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    </head>
+    <body>
+        <div id="pagewrap">
+            <h1 class="header"> Welcome to our Color site</h1>
+            <div id="flexwrapper">
+                <div class="box1">
+                    <p>Time: <span id="time"></span></p>
+                    <p>Color: <span id="color"></span></p>
+                    <p>Swipe Direction: <span id="direction"></span></p>
+                </div>
+            </div>
+        </div>
+        <script>
+            fetchlocaldata();
+            async function fetchlocaldata(){
+                while(true){        
+                    await axios.get("/localdata")
+                    .then(res => {
+                        document.getElementById("color").innerHTML = res.data.colorData;
+                        document.getElementById("direction").innerHTML = res.data.directionData;
+                        document.getElementById("time").innerHTML = res.data.timeData;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        document.getElementById("color").innerHTML = "-";
+                        document.getElementById("direction").innerHTML = "-";
+                        document.getElementById("time").innerHTML = "-";
+                    });
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }
+            }
+        </script>
+    </body>
+</html>
